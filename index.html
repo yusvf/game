@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساحة التحديات - النسخة المحسنة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --background-dark: #0f0f0f;
+            --background-light: #ffffff;
+            --text-light: #ffffff;
+            --text-dark: #000000;
+            --card-bg: #222222;
+            --success-color: #00ff00;
+            --warning-color: #ff0000;
+            --gold-color: #ffd700;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background-dark), #1a1a1a);
+            color: var(--text-light);
+            min-height: 100vh;
+            transition: all var(--transition-speed) ease;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(17, 17, 17, 0.95);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 20px var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.7rem 1.2rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: var(--primary-color);
+            color: var(--background-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        button:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        select {
+            padding: 0.7rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        select:hover {
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .player-section {
+            background: rgba(34, 34, 34, 0.95);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px var(--primary-color);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .player-section:hover {
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+
+        .player-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--text-light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .player-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .player-card {
+            background: rgba(51, 51, 51, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--primary-color);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .player-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .challenge-section {
+            background: rgba(34, 34, 34, 0.95);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 0 20px var(--primary-color);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .challenge-card {
+            background: rgba(51, 51, 51, 0.95);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            border: 2px solid var(--primary-color);
+            font-size: 1.4rem;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .gold-challenge {
+            color: var(--gold-color);
+            text-shadow: 0 0 10px var(--gold-color);
+            font-weight: 700;
+        }
+
+        .points-display {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 1rem 0;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .finish-button {
+            font-size: 2.2rem;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(45deg, var(--gold-color), #ffa500);
+            border: none;
+            color: var(--text-dark);
+            position: fixed;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .finish-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--gold-color);
+        }
+
+        @keyframes neonPulse {
+            0% { box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color); }
+            100% { box-shadow: 0 0 20px var(--secondary-color), 0 0 30px var(--primary-color); }
+        }
+
+        .neon-effect {
+            animation: neonPulse 2s infinite alternate;
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background: linear-gradient(135deg, var(--background-light), #f0f0f0);
+            color: var(--text-dark);
+        }
+
+        body.light-theme .navbar,
+        body.light-theme .player-section,
+        body.light-theme .challenge-section {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-theme .player-card,
+        body.light-theme .challenge-card {
+            background: rgba(240, 240, 240, 0.95);
+            border-color: #000000;
+        }
+
+        /* Pink Theme */
+        body.pink-theme {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+        }
+
+        body.pink-theme .navbar,
+        body.pink-theme .player-section,
+        body.pink-theme .challenge-section {
+            background: rgba(255, 192, 203, 0.95);
+            box-shadow: 0 0 20px #ff69b4;
+        }
+
+        body.pink-theme .player-card,
+        body.pink-theme .challenge-card {
+            background: rgba(255, 182, 193, 0.95);
+            border-color: #ff1493;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .player-input {
+                flex-direction: column;
+            }
+
+            .player-list {
+                grid-template-columns: 1fr;
+            }
+
+            .challenge-card {
+                font-size: 1.2rem;
+                padding: 1.5rem;
+            }
+
+            .finish-button {
+                font-size: 1.8rem;
+                padding: 1rem 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* New Features Styles */
+        .timer {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 1rem 0;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .achievement {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--gold-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+            color: var(--gold-color);
+        }
+
+        .power-up {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid var(--success-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+            color: var(--success-color);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .power-up:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--success-color);
+        }
+
+        .leaderboard {
+            background: rgba(34, 34, 34, 0.95);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .leaderboard h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">ساحة التحديات</div>
+        <div class="controls">
+            <button onclick="toggleTheme()">تغيير المظهر</button>
+            <button onclick="toggleMusic()" id="musicBtn">🎵 تشغيل الموسيقى</button>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+            </select>
+            <button onclick="exitGame()" style="background: var(--warning-color); color: var(--text-light);">خروج</button>
+        </div>
+        <div id="mainPlayerPoints" class="points-display"></div>
+    </nav>
+
+    <div class="game-container">
+        <div class="player-section fade-in" id="playerList">
+            <h2>اللاعبون</h2>
+            <div class="player-input">
+                <input type="text" id="playerNameInput" placeholder="أدخل اسم اللاعب">
+                <button onclick="addPlayer()">إضافة لاعب</button>
+            </div>
+            <div class="player-list" id="players"></div>
+            <button onclick="startGame()" style="margin-top: 1.5rem;">بدء اللعبة</button>
+        </div>
+
+        <div class="challenge-section hidden fade-in" id="gameSection">
+            <div class="player-section">
+                <h2>اللاعب الحالي</h2>
+                <div id="currentPlayerBox">
+                    <h3 id="currentPlayer"></h3>
+                    <p id="currentPlayerPoints" class="points-display"></p>
+                </div>
+                <div class="timer" id="challengeTimer"></div>
+            </div>
+
+            <h2 id="currentLevel">المستوى 1</h2>
+            <div class="challenge-card" id="challengeCard">
+                انقر على "التحدي التالي" للبدء!
+            </div>
+
+            <div class="controls">
+                <button id="nextChallengeBtn">التحدي التالي</button>
+                <button id="completeChallengeBtn" class="hidden">أكملت التحدي</button>
+                <button id="skipChallengeBtn" class="hidden">تخطي (-50 نقطة)</button>
+                <button id="punishmentBtn" class="hidden" style="background: var(--warning-color); color: var(--text-light);">😈 عقاب (-5 نقاط)</button>
+            </div>
+
+            <div class="power-ups">
+                <div class="power-up" onclick="usePowerUp('doublePoints')">⚡ مضاعفة النقاط</div>
+                <div class="power-up" onclick="usePowerUp('skipChallenge')">🔄 تخطي التحدي</div>
+                <div class="power-up" onclick="usePowerUp('extraTime')">⏰ وقت إضافي</div>
+            </div>
+
+            <div class="achievements" id="achievements"></div>
+
+            <div class="leaderboard">
+                <h2>لوحة المتصدرين</h2>
+                <div id="leaderboardList"></div>
+            </div>
+
+            <button id="finishGameBtn" class="finish-button hidden">🏆 إنهاء اللعبة! 🏆</button>
+        </div>
+    </div>
+
+    <audio id="bgMusic" src="sounds/background.mp3" loop></audio>
+    <audio id="clickSound" src="sounds/click.mp3"></audio>
+
+    <script>
+        // Game State
+        let players = [];
+        let currentPlayerIndex = 0;
+        let challenges = [];
+        let goldChallenges = [];
+        let mainPlayerPoints = 0;
+        let currentLevel = 1;
+        let currentTheme = 'dark';
+        let timer = null;
+        let timeLeft = 60;
+        let powerUps = {
+            doublePoints: 1,
+            skipChallenge: 1,
+            extraTime: 1
+        };
+        let achievements = [];
+
+        // Level 1 Challenges
+        const level1Challenges = [
+            "قل نكتة مضحكة 😂",
+            "اعمل صوت حيوان لمدة 10 ثواني 🐒",
+            "ارقص رقصة غريبة 🎵",
+            "قل سر عن نفسك 🤫",
+            "صف نفسك بكلمة واحدة ✨",
+            "قلد شخصية مشهورة 🎭",
+            "اعمل 10 تمرين ضغط 🏋️‍♂️",
+            "غني أغنية بطريقة سيئة 🎤",
+            "قل أكتر حاجة بتخاف منها 😱",
+            "اعمل رقصة روبوت 🤖"
+        ];
+
+        const level1GoldChallenges = [
+            "جاوب بصراحة على سؤال محرج ⭐",
+            "غني أغنية قدام كل الناس ⭐",
+            "اعمل تحدي مضحك قدام الكاميرا ⭐"
+        ];
+
+        // Punishments
+        const punishments = [
+            "اعمل 30 تمرين ضغط قدام الجميع",
+            "اتكلم بصوت طفولي لدقيقتين",
+            "غني أغنية مش بتحبها بصوت عالي",
+            "خلي حد يرسم على وشك رسمة غريبة",
+            "اعمل مشهد أكشن بطريقة مضحكة",
+            "اقعد 5 دقايق بدون حركة",
+            "احكي عن موقف محرج حصل معاك",
+            "اعمل مشهد حزين",
+            "خلي لاعب تاني يطلب منك تحدي جديد",
+            "اتكلم عن شخص تحبه وانت مكسوف"
+        ];
+
+        // Game Functions
+        function addPlayer() {
+            const nameInput = document.getElementById('playerNameInput');
+            const name = nameInput.value.trim();
+            
+            if (name) {
+                players.push({ 
+                    name, 
+                    points: 0,
+                    achievements: [],
+                    powerUps: { ...powerUps }
+                });
+                updatePlayers();
+                nameInput.value = '';
+                playClickSound();
+                
+                // Add animation to new player card
+                const playerCards = document.querySelectorAll('.player-card');
+                if (playerCards.length > 0) {
+                    playerCards[playerCards.length - 1].classList.add('fade-in');
+                }
+            }
+        }
+
+        function updatePlayers() {
+            const playersDiv = document.getElementById('players');
+            playersDiv.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <h3>${player.name}</h3>
+                    <p class="points-display">${player.points} نقطة</p>
+                    <div class="achievements">
+                        ${player.achievements.map(achievement => `
+                            <div class="achievement">${achievement}</div>
+                        `).join('')}
+                    </div>
+                `;
+                playersDiv.appendChild(card);
+            });
+
+            updateLeaderboard();
+        }
+
+        function startGame() {
+            if (players.length === 0) {
+                alert('الرجاء إضافة لاعب واحد على الأقل!');
+                return;
+            }
+
+            document.getElementById('playerList').classList.add('hidden');
+            document.getElementById('gameSection').classList.remove('hidden');
+            challenges = [...level1Challenges];
+            goldChallenges = [...level1GoldChallenges];
+            updateCurrentPlayerInfo();
+            startTimer();
+            playClickSound();
+        }
+
+        function updateCurrentPlayerInfo() {
+            const currentPlayer = players[currentPlayerIndex];
+            document.getElementById('currentPlayer').textContent = currentPlayer.name;
+            document.getElementById('currentPlayerPoints').textContent = `${currentPlayer.points} نقطة`;
+            document.getElementById('mainPlayerPoints').textContent = `اللاعب الرئيسي: ${mainPlayerPoints} نقطة`;
+        }
+
+        function startTimer() {
+            timeLeft = 60;
+            updateTimerDisplay();
+            
+            if (timer) clearInterval(timer);
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('challengeTimer').textContent = `⏰ ${timeLeft} ثانية`;
+        }
+
+        function handleTimeUp() {
+            alert('انتهى الوقت! سيتم تخطي دورك.');
+            nextTurn();
+        }
+
+        // Challenge Functions
+        document.getElementById('nextChallengeBtn').addEventListener('click', () => {
+            const isGold = Math.random() <= 0.15;
+            const challengeCard = document.getElementById('challengeCard');
+            
+            if (isGold && goldChallenges.length > 0) {
+                const challenge = goldChallenges[Math.floor(Math.random() * goldChallenges.length)];
+                challengeCard.innerHTML = `<span class="gold-challenge">${challenge}</span>`;
+            } else if (challenges.length > 0) {
+                const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+                challengeCard.textContent = challenge;
+            } else {
+                challengeCard.textContent = "لا مزيد من التحديات!";
+            }
+
+            toggleChallengeButtons(true);
+            startTimer();
+            playClickSound();
+        });
+
+        function toggleChallengeButtons(show) {
+            document.getElementById('nextChallengeBtn').classList.toggle('hidden', show);
+            document.getElementById('completeChallengeBtn').classList.toggle('hidden', !show);
+            document.getElementById('skipChallengeBtn').classList.toggle('hidden', !show);
+            document.getElementById('punishmentBtn').classList.toggle('hidden', !show);
+        }
+
+        function usePowerUp(type) {
+            const currentPlayer = players[currentPlayerIndex];
+            
+            if (currentPlayer.powerUps[type] > 0) {
+                currentPlayer.powerUps[type]--;
+                
+                switch(type) {
+                    case 'doublePoints':
+                        currentPlayer.points *= 2;
+                        alert('تم مضاعفة النقاط!');
+                        break;
+                    case 'skipChallenge':
+                        nextTurn();
+                        alert('تم تخطي التحدي!');
+                        break;
+                    case 'extraTime':
+                        timeLeft += 30;
+                        alert('تم إضافة 30 ثانية!');
+                        break;
+                }
+                
+                updateCurrentPlayerInfo();
+                updatePlayers();
+            } else {
+                alert('لا يوجد لديك قوى إضافية من هذا النوع!');
+            }
+        }
+
+        function checkAchievements() {
+            const currentPlayer = players[currentPlayerIndex];
+            
+            if (currentPlayer.points >= 100 && !currentPlayer.achievements.includes('🏆 100 نقطة')) {
+                currentPlayer.achievements.push('🏆 100 نقطة');
+            }
+            
+            if (currentPlayer.points >= 200 && !currentPlayer.achievements.includes('🌟 200 نقطة')) {
+                currentPlayer.achievements.push('🌟 200 نقطة');
+            }
+            
+            if (currentPlayer.points >= 300 && !currentPlayer.achievements.includes('👑 300 نقطة')) {
+                currentPlayer.achievements.push('👑 300 نقطة');
+            }
+        }
+
+        function updateLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
+            
+            leaderboardList.innerHTML = sortedPlayers.map((player, index) => `
+                <div class="leaderboard-item">
+                    <span>${index + 1}. ${player.name}</span>
+                    <span>${player.points} نقطة</span>
+                </div>
+            `).join('');
+        }
+
+        function nextTurn() {
+            if (timer) clearInterval(timer);
+            
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            updateCurrentPlayerInfo();
+            updatePlayers();
+            checkAchievements();
+            
+            document.getElementById('challengeCard').textContent = "انقر على 'التحدي التالي' للبدء!";
+            toggleChallengeButtons(false);
+        }
+
+        // Theme Functions
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.remove('light-theme', 'pink-theme');
+            
+            if (currentTheme === 'dark') {
+                body.classList.add('light-theme');
+                currentTheme = 'light';
+            } else if (currentTheme === 'light') {
+                body.classList.add('pink-theme');
+                currentTheme = 'pink';
+            } else {
+                currentTheme = 'dark';
+            }
+            
+            playClickSound();
+        }
+
+        // Audio Functions
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            
+            if (music.paused) {
+                music.play();
+                btn.textContent = "🎵 تشغيل الموسيقى";
+            } else {
+                music.pause();
+                btn.textContent = "🔇 إيقاف الموسيقى";
+            }
+            
+            playClickSound();
+        }
+
+        function playClickSound() {
+            const click = document.getElementById('clickSound');
+            click.currentTime = 0;
+            click.play().catch(e => console.log('Error playing sound:', e));
+        }
+
+        // Language Functions
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            playClickSound();
+            // Add language-specific translations here
+        }
+
+        // Exit Function
+        function exitGame() {
+            if (confirm('هل أنت متأكد أنك تريد الخروج؟')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('playerNameInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                addPlayer();
+            }
+        });
+
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add any initialization code here
+        });
+    </script>
+</body>
+</html>
